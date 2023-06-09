@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.teampotato.starks.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "starks.refmap.json",
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "mixins": [
+    "TameableEntityMixin"
+  ]
+}

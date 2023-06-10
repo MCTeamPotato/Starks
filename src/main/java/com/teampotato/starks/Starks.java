@@ -11,6 +11,8 @@ import net.minecraftforge.fml.config.ModConfig;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.List;
+
 public class Starks implements ModInitializer {
 	public static final String ID = "starks";
 	public static final Logger LOGGER = LogManager.getLogger("Starks");
@@ -24,6 +26,7 @@ public class Starks implements ModInitializer {
 	public static ForgeConfigSpec.BooleanValue isTradeable, isCurse, isTreasureOnly, isDiscoverable, isAverageHealAmounts;
 	public static ForgeConfigSpec.ConfigValue<String> rarity;
 	public static ForgeConfigSpec.DoubleValue playerAroundX, playerAroundY, playerAroundZ, playerHealthPercentage;
+	public static ForgeConfigSpec.ConfigValue<List<String>> validDamageSourceTypes;
 
 	static {
 		ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
@@ -55,6 +58,19 @@ public class Starks implements ModInitializer {
 						"But if you turn this off, the damage amounts won't be average according to the pets number, but all amounts persent on each heal."
 				)
 				.define("isAverageHealAmounts", true);
+		validDamageSourceTypes = builder
+				.comment(
+						"Here are the types of damage source that the player will take instead for the pets.",
+						"Allowed values: " +
+								"inFire, lightningBolt, onFire, " +
+								"lava, hotFloor, inWall, " +
+								"cramming, drown, starve, " +
+								"cactus, fall, flyIntoWall, " +
+								"outOfWorld, generic, magic, " +
+								"wither, anvil, fallingBlock, " +
+								"dragonBreath, dryout, sweetBerryBush"
+				)
+				.define("validDamageSourceTypes", Lists.newArrayList("generic"), o -> o instanceof String);
 		builder.pop();
 		configSpec = builder.build();
 	}

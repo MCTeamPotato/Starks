@@ -52,7 +52,7 @@ public abstract class MixinLivingEntity extends Entity {
         }
 
         if (((LivingEntity)(Object)this) instanceof TameableEntity pet) {
-            if (pet.getOwner() instanceof PlayerEntity player) {
+            if (pet.getOwner() instanceof PlayerEntity player && validDamageSourceTypes.get().contains(source.getName())) {
                 double health = player.getHealth();
                 double maxHealth = player.getMaxHealth();
                 if (

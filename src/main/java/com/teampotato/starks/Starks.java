@@ -1,21 +1,21 @@
 package com.teampotato.starks;
 
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.entity.passive.TameableEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -72,18 +72,17 @@ public class Starks {
     @SuppressWarnings("unused")
     public static final RegistryObject<Enchantment> STARKS = ENCHANTMENT_DEFERRED_REGISTER.register(ID, StarksEnchantment::new);
 
-    private static boolean isStarksPresent(PlayerEntity player) {
-        return player.getItemBySlot(EquipmentSlotType.HEAD).getEnchantmentTags().toString().contains(ID);
+    private static boolean isStarksPresent(Player player) {
+        return player.getItemBySlot(EquipmentSlot.HEAD).getEnchantmentTags().toString().contains(ID);
     }
 
     @SubscribeEvent
     public static void onPlayerAttack(LivingHurtEvent event) {
-        if (event.getSource().getDirectEntity() instanceof PlayerEntity) {
-            PlayerEntity player = (PlayerEntity) event.getSource().getDirectEntity();
+        if (event.getSource().getDirectEntity() instanceof Player player) {
             if (!isStarksPresent(player)) return;
-            AxisAlignedBB playerAABB = player.getBoundingBox();
-            List<TameableEntity> pets = player.level.getEntitiesOfClass(TameableEntity.class,
-                    new AxisAlignedBB(
+            AABB playerAABB = player.getBoundingBox();
+            List<TamableAnimal> pets = player.level.getEntitiesOfClass(TamableAnimal.class,
+                    new AABB(
                             playerAABB.minX - playerAroundX.get(),
                             playerAABB.minY - playerAroundY.get(),
                             playerAABB.minZ - playerAroundZ.get(),
@@ -98,7 +97,7 @@ public class Starks {
             } else {
                 amount = event.getAmount();
             }
-            for (TameableEntity pet : pets) {
+            for (TamableAnimal pet : pets) {
                 pet.setHealth(pet.getHealth() + amount);
             }
         }
@@ -106,12 +105,10 @@ public class Starks {
 
     @SubscribeEvent
     public static void onPetHurt(LivingHurtEvent event) {
-        if (event.getEntityLiving() instanceof TameableEntity) {
-            TameableEntity pet = (TameableEntity) event.getEntityLiving();
-            if (pet.getOwner() instanceof PlayerEntity) {
+        if (event.getEntity() instanceof TamableAnimal pet) {
+            if (pet.getOwner() instanceof Player player) {
                 DamageSource source = event.getSource();
                 double amount = event.getAmount();
-                PlayerEntity player = (PlayerEntity) pet.getOwner();
                 double health = player.getHealth();
                 double maxHealth = player.getMaxHealth();
                 if (

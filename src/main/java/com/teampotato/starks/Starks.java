@@ -48,9 +48,11 @@ public class Starks {
         playerAroundX = builder.defineInRange("playerAroundX", 10.00, 1.00, Double.MAX_VALUE);
         playerAroundY = builder.defineInRange("playerAroundY", 10.00, 1.00, Double.MAX_VALUE);
         playerAroundZ = builder.defineInRange("playerAroundZ", 10.00, 1.00, Double.MAX_VALUE);
+        builder.comment("\n");
         playerHealthPercentage = builder
                 .comment("If player's current health is less than 'maxHealth * playerHealthPercentage', players will not take damage for their pets")
                 .defineInRange("playerHealthPercentage", 0.3F, 0.0F, 1.0F, Float.class);
+        builder.comment("\n");
         builder.comment("Enchantment's properties");
         isTradeable = builder.define("isTradeable", true);
         isCurse = builder.define("isCurse", false);
@@ -63,6 +65,7 @@ public class Starks {
         validEquipmentSlotTypes = builder
                 .comment("Allowed values: MAINHAND, OFFHAND, HEAD, CHEST, LEGS, FEET.", "Can be multiple, such as [\"HEAD\", \"FEET\"]")
                 .defineList("validEquipmentSlotTypes", Lists.newArrayList("HEAD"), o -> o instanceof String && validEquipmentSlotTypeList.contains((String) o));
+        builder.comment("\n");
         averageHealAmounts = builder
                 .comment(
                         "Your attack to creatures will heal your pets based on the damage amounts.",
@@ -80,8 +83,8 @@ public class Starks {
 
     public Starks() {
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, configSpec);
-        ENCHANTMENT_DEFERRED_REGISTER.register(FMLJavaModLoadingContext.get().getModEventBus());
         MinecraftForge.EVENT_BUS.register(this);
+        ENCHANTMENT_DEFERRED_REGISTER.register(FMLJavaModLoadingContext.get().getModEventBus());
     }
 
     public static final Map<String, EquipmentSlotType> validEqipmentSlotTypeCacheMap = new HashMap<>(validEquipmentSlotTypes.get().size());
@@ -89,7 +92,7 @@ public class Starks {
     public static boolean isStarksPresent(PlayerEntity player) {
         if (validEqipmentSlotTypeCacheMap.isEmpty()) {
             for (String type : validEquipmentSlotTypes.get()) {
-                validEqipmentSlotTypeCacheMap.put(type, EquipmentSlotType.byName(type));
+                validEqipmentSlotTypeCacheMap.put(type, EquipmentSlotType.byName(type.toLowerCase()));
             }
         }
         for (EquipmentSlotType type : validEqipmentSlotTypeCacheMap.values()) {

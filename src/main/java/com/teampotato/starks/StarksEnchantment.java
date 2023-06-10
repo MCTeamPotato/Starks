@@ -26,7 +26,7 @@ public class StarksEnchantment extends Enchantment {
     }
 
     protected StarksEnchantment() {
-        super(getRarityInConfig(), ENCHANTMENT_TYPE, validEqipmentSlotTypeMap.values().toArray(new EquipmentSlotType[0]));
+        super(getRarityInConfig(), ENCHANTMENT_TYPE, validEqipmentSlotTypeCacheMap.values().toArray(new EquipmentSlotType[0]));
     }
 
     public boolean isTreasureOnly() {

@@ -84,15 +84,15 @@ public class Starks {
         MinecraftForge.EVENT_BUS.register(this);
     }
 
-    public static final Map<String, EquipmentSlotType> validEqipmentSlotTypeMap = new HashMap<>(validEquipmentSlotTypes.get().size());
+    public static final Map<String, EquipmentSlotType> validEqipmentSlotTypeCacheMap = new HashMap<>(validEquipmentSlotTypes.get().size());
 
     public static boolean isStarksPresent(PlayerEntity player) {
-        if (validEqipmentSlotTypeMap.isEmpty()) {
+        if (validEqipmentSlotTypeCacheMap.isEmpty()) {
             for (String type : validEquipmentSlotTypes.get()) {
-                validEqipmentSlotTypeMap.put(type, EquipmentSlotType.byName(type));
+                validEqipmentSlotTypeCacheMap.put(type, EquipmentSlotType.byName(type));
             }
         }
-        for (EquipmentSlotType type : validEqipmentSlotTypeMap.values()) {
+        for (EquipmentSlotType type : validEqipmentSlotTypeCacheMap.values()) {
             if (player.getItemBySlot(type).getEnchantmentTags().toString().contains("starks")) return true;
         }
         return false;

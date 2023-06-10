@@ -7,8 +7,6 @@ import net.minecraft.inventory.EquipmentSlotType;
 import static com.teampotato.starks.Starks.*;
 
 public class StarksEnchantment extends Enchantment {
-    private static final EnchantmentType ENCHANTMENT_TYPE = EnchantmentType.create(ID + ":starks", null);
-
     private static Rarity getRarityInConfig() {
         switch (rarity.get()) {
             case "COMMON":
@@ -24,23 +22,26 @@ public class StarksEnchantment extends Enchantment {
                 return Rarity.UNCOMMON;
         }
     }
-
     protected StarksEnchantment() {
-        super(getRarityInConfig(), ENCHANTMENT_TYPE, validEqipmentSlotTypeCacheMap.values().toArray(new EquipmentSlotType[0]));
+        super(getRarityInConfig(), EnchantmentType.ARMOR_HEAD, new EquipmentSlotType[]{EquipmentSlotType.HEAD});
     }
 
     public boolean isTreasureOnly() {
         return isTreasureOnly.get();
     }
+
     public boolean isCurse() {
         return isCurse.get();
     }
+
     public boolean isTradeable() {
         return isTradeable.get();
     }
+
     public boolean isDiscoverable() {
         return isDiscoverable.get();
     }
+
     public boolean isAllowedOnBooks() {
         return isAllowedOnBooks.get();
     }

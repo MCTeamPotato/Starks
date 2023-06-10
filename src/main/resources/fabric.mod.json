@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "starks",
+  "version": "${version}",
+
+  "name": "Starks",
+  "description": "",
+  "authors": [
+    "TeamPotato"
+  ],
+  "contact": {
+    "homepage": "",
+    "sources": ""
+  },
+
+  "license": "LGPL-v3",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.teampotato.starks.Starks"
+    ]
+  },
+  "mixins": [
+    "starks.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": "*",
+    "fabric-api": "*",
+    "minecraft": "*",
+    "java": "*"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}

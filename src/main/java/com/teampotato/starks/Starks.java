@@ -5,7 +5,7 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemStack;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -20,23 +20,14 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Mod(Starks.ID)
 public class Starks {
     public static final String ID = "starks";
     public static final Logger LOGGER = LogManager.getLogger("Starks");
-
-    public static final DeferredRegister<Enchantment> ENCHANTMENT_DEFERRED_REGISTER = DeferredRegister.create(ForgeRegistries.ENCHANTMENTS, ID);
-
-    @SuppressWarnings("unused")
-    public static final RegistryObject<Enchantment> STARKS = ENCHANTMENT_DEFERRED_REGISTER.register("starks", StarksEnchantment::new);
-
-    public Starks() {
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, configSpec);
-        ENCHANTMENT_DEFERRED_REGISTER.register(FMLJavaModLoadingContext.get().getModEventBus());
-        MinecraftForge.EVENT_BUS.register(this);
-    }
 
     public static ForgeConfigSpec configSpec;
     public static ForgeConfigSpec.BooleanValue isTradeable, isCurse, isTreasureOnly, isDiscoverable, isAllowedOnBooks, averageHealAmounts;
@@ -82,6 +73,31 @@ public class Starks {
         configSpec = builder.build();
     }
 
+    public static final DeferredRegister<Enchantment> ENCHANTMENT_DEFERRED_REGISTER = DeferredRegister.create(ForgeRegistries.ENCHANTMENTS, ID);
+
+    @SuppressWarnings("unused")
+    public static final RegistryObject<Enchantment> STARKS = ENCHANTMENT_DEFERRED_REGISTER.register("starks", StarksEnchantment::new);
+
+    public Starks() {
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, configSpec);
+        ENCHANTMENT_DEFERRED_REGISTER.register(FMLJavaModLoadingContext.get().getModEventBus());
+        MinecraftForge.EVENT_BUS.register(this);
+    }
+
+    public static final Map<String, EquipmentSlotType> validEqipmentSlotTypeMap = new HashMap<>(validEquipmentSlotTypes.get().size());
+
+    public static boolean isStarksPresent(PlayerEntity player) {
+        if (validEqipmentSlotTypeMap.isEmpty()) {
+            for (String type : validEquipmentSlotTypes.get()) {
+                validEqipmentSlotTypeMap.put(type, EquipmentSlotType.byName(type));
+            }
+        }
+        for (EquipmentSlotType type : validEqipmentSlotTypeMap.values()) {
+            if (player.getItemBySlot(type).getEnchantmentTags().toString().contains("starks")) return true;
+        }
+        return false;
+    }
+
     @SubscribeEvent
     public static void onPlayerAttack(LivingHurtEvent event) {
         if (event.getSource().getDirectEntity() instanceof ServerPlayerEntity) {
@@ -98,13 +114,5 @@ public class Starks {
                 pet.setHealth(pet.getHealth() + amount);
             }
         }
-    }
-
-    public static boolean isStarksPresent(PlayerEntity player) {
-        if (player.getMainHandItem().getEnchantmentTags().toString().contains("starks") || player.getOffhandItem().getEnchantmentTags().toString().contains("starks")) return true;
-        for (ItemStack armorSlot : player.getArmorSlots()) {
-            if (armorSlot.getEnchantmentTags().toString().contains("starks")) return true;
-        }
-        return false;
     }
 }

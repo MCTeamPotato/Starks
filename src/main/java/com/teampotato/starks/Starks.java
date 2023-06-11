@@ -32,7 +32,7 @@ public class Starks {
     public static ForgeConfigSpec.BooleanValue isTradeable, isCurse, isTreasureOnly, isDiscoverable, isAllowedOnBooks, isAverageHealAmounts;
     public static ForgeConfigSpec.ConfigValue<String> rarity;
     public static ForgeConfigSpec.DoubleValue playerAroundX, playerAroundY, playerAroundZ, playerHealthPercentage;
-    public static ForgeConfigSpec.ConfigValue<List<String>> validDamageSourceTypes;
+    public static ForgeConfigSpec.ConfigValue<List<? extends String>> validDamageSourceTypes;
 
     static {
         ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
@@ -77,7 +77,7 @@ public class Starks {
                                 "wither, anvil, fallingBlock, " +
                                 "dragonBreath, dryout, sweetBerryBush"
                 )
-                .define("validDamageSourceTypes", Lists.newArrayList("generic"), o -> o instanceof String);
+                .defineList("validDamageSourceTypes", Lists.newArrayList("generic"), o -> o instanceof String);
         builder.pop();
         configSpec = builder.build();
     }

@@ -1,5 +1,6 @@
 package com.teampotato.starks;
 
+import com.google.common.collect.Lists;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
@@ -26,7 +27,7 @@ public class Starks implements ModInitializer {
 	public static ForgeConfigSpec.BooleanValue isTradeable, isCurse, isTreasureOnly, isDiscoverable, isAverageHealAmounts;
 	public static ForgeConfigSpec.ConfigValue<String> rarity;
 	public static ForgeConfigSpec.DoubleValue playerAroundX, playerAroundY, playerAroundZ, playerHealthPercentage;
-	public static ForgeConfigSpec.ConfigValue<List<String>> validDamageSourceTypes;
+	public static ForgeConfigSpec.ConfigValue<List<? extends String>> validDamageSourceTypes;
 
 	static {
 		ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
@@ -70,7 +71,7 @@ public class Starks implements ModInitializer {
 								"wither, anvil, fallingBlock, " +
 								"dragonBreath, dryout, sweetBerryBush"
 				)
-				.define("validDamageSourceTypes", Lists.newArrayList("generic"), o -> o instanceof String);
+				.defineList("validDamageSourceTypes", Lists.newArrayList("generic"), o -> o instanceof String);
 		builder.pop();
 		configSpec = builder.build();
 	}

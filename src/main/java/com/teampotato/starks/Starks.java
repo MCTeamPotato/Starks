@@ -27,7 +27,7 @@ public class Starks implements ModInitializer {
 	public static ForgeConfigSpec.BooleanValue isTradeable, isCurse, isTreasureOnly, isDiscoverable, isAverageHealAmounts;
 	public static ForgeConfigSpec.ConfigValue<String> rarity;
 	public static ForgeConfigSpec.DoubleValue playerAroundX, playerAroundY, playerAroundZ, playerHealthPercentage;
-	public static ForgeConfigSpec.ConfigValue<List<? extends String>> validDamageSourceTypes;
+	public static ForgeConfigSpec.ConfigValue<List<? extends String>> invalidDamageSourceTypes;
 
 	static {
 		ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
@@ -59,9 +59,9 @@ public class Starks implements ModInitializer {
 						"But if you turn this off, the damage amounts won't be average according to the pets number, but all amounts persent on each heal."
 				)
 				.define("isAverageHealAmounts", true);
-		validDamageSourceTypes = builder
+		invalidDamageSourceTypes = builder
 				.comment(
-						"Here are the types of damage source that the player will take instead for the pets.",
+						"Here are the types of damage source that the player will not take instead for the pets.",
 						"Allowed values: " +
 								"inFire, lightningBolt, onFire, " +
 								"lava, hotFloor, inWall, " +
@@ -71,7 +71,7 @@ public class Starks implements ModInitializer {
 								"wither, anvil, fallingBlock, " +
 								"dragonBreath, dryout, sweetBerryBush"
 				)
-				.defineList("validDamageSourceTypes", Lists.newArrayList("generic"), o -> o instanceof String);
+				.defineList("invalidDamageSourceTypes", Lists.newArrayList("onFire", "drown", "fall", "outOfWorld", "cactus", "lava"), o -> o instanceof String);
 		builder.pop();
 		configSpec = builder.build();
 	}

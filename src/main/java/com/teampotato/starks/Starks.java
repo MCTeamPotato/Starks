@@ -57,6 +57,7 @@ public class Starks {
         rarity = builder
                 .comment("Allowed value: COMMON, UNCOMMON, RARE, VERY_RARE")
                 .define("rarity", "UNCOMMON");
+        isAllowedOnBooks = builder.define("isAllowedOnBooks", true);
         builder.comment("\n");
         isAverageHealAmounts = builder
                 .comment(

@@ -10,6 +10,9 @@ This enchantment is only valid on helmets.
 
 2. This enchantment will let you take damage for your pets instead if your health is enough.
 
+## Issues Report
+https://github.com/MCTeamPotato/Kasualix-Issue-Tracker
+
 ## Config
 
 a lot of things are configurable in the mod's config, including:
@@ -19,8 +22,6 @@ a lot of things are configurable in the mod's config, including:
 **playerHealthPercentage** (intro: If player's current health is less than 'maxHealth * playerHealthPercentage', players will not take damage for their pets. Additionally, players won't take damage that is more than their health too)
 
 Enchantment's properties: **isTradeable**, **isCurse**, **isTreasureOnly**, **isDiscoverable**, **isAllowedOnBooks** (forge only), **rarity**
-# Issues Report
-https://github.com/MCTeamPotato/Kasualix-Issue-Tracker
 
 **isAverageHealAmounts** (intro: Your attack to creatures will heal your pets based on the damage amounts. But if you turn this off, the damage amounts won't be average according to the pets number, but all amounts persent on each heal.)
 
